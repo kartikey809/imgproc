@@ -6,7 +6,7 @@ import cv2
 
 
 def channelTransform(ch1, ch2, shape,FUSION_METHOD):
-    if (FUSION_METHOD=='mean'):
+    if (FUSION_METHOD=='meanmean'):
         cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
         cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
         cA1, (cH1, cV1, cD1) = cooef1
@@ -19,7 +19,46 @@ def channelTransform(ch1, ch2, shape,FUSION_METHOD):
         fincoC = cA, (cH, cV, cD)
         outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
         outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
-    elif (FUSION_METHOD=='max'):
+    elif (FUSION_METHOD=='meanmax'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = (cA1 +cA2)/2
+        cH = np.maximum(cH1, cH2)
+        cV = np.maximum(cV1, cV2)
+        cD = np.maximum(cD1, cD2)
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'meanmin'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = (cA1 + cA2)/2
+        cH = np.minimum(cH1, cH2)
+        cV = np.minimum(cV1, cV2)
+        cD = np.minimum(cD1, cD2)
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'maxmean'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = np.maximum(cA1, cA2)
+        cH = (cH1 + cH2)/2
+        cV = (cV1 + cV2)/2
+        cD = (cD1 + cD2)/2
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'maxmax'):
         cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
         cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
         cA1, (cH1, cV1, cD1) = cooef1
@@ -32,7 +71,46 @@ def channelTransform(ch1, ch2, shape,FUSION_METHOD):
         fincoC = cA, (cH, cV, cD)
         outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
         outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
-    elif (FUSION_METHOD == 'min'):
+    elif (FUSION_METHOD == 'maxmin'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = np.maximum(cA1, cA2)
+        cH = np.minimum(cH1, cH2)
+        cV = np.minimum(cV1, cV2)
+        cD = np.minimum(cD1, cD2)
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'minmean'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = np.minimum(cA1, cA2)
+        cH = (cH1 + cH2)/2
+        cV = (cV1 + cV2)/2
+        cD = (cD1 + cD2)/2
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'minmax'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = np.minimum(cA1, cA2)
+        cH = np.maximum(cH1, cH2)
+        cV = np.maximum(cV1, cV2)
+        cD = np.maximum(cD1, cD2)
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'minminn'):
         cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
         cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
         cA1, (cH1, cV1, cD1) = cooef1
@@ -50,7 +128,7 @@ def channelTransform(ch1, ch2, shape,FUSION_METHOD):
 
 def fusion(img1, img2):
     # Params
-    FUSION_METHOD = 'mean'  # Can be 'min' || 'max || anything you choose according theory
+    FUSION_METHOD = 'maxmean'  # Can be 'min' || 'max || anything you choose according theory
 
     # Read the two image
     I1 = cv2.imread(img1)
