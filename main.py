@@ -25,10 +25,23 @@ def channelTransform(ch1, ch2, shape,FUSION_METHOD):
         cA1, (cH1, cV1, cD1) = cooef1
         cA2, (cH2, cV2, cD2) = cooef2
 
-        cA = max(cA1, cA2)
-        cH = max(cH1, cH2)
-        cV = max(cV1, cV2)
-        cD = max(cD1, cD2)
+        cA = np.maximum(cA1, cA2)
+        cH = np.maximum(cH1, cH2)
+        cV = np.maximum(cV1, cV2)
+        cD = np.maximum(cD1, cD2)
+        fincoC = cA, (cH, cV, cD)
+        outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
+        outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
+    elif (FUSION_METHOD == 'min'):
+        cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
+        cooef2 = pywt.dwt2(ch2, 'db5', mode='periodization')
+        cA1, (cH1, cV1, cD1) = cooef1
+        cA2, (cH2, cV2, cD2) = cooef2
+
+        cA = np.minimum(cA1, cA2)
+        cH = np.minimum(cH1, cH2)
+        cV = np.minimum(cV1, cV2)
+        cD = np.minimum(cD1, cD2)
         fincoC = cA, (cH, cV, cD)
         outImageC = pywt.idwt2(fincoC, 'db5', mode='periodization')
         outImageC = cv2.resize(outImageC, (shape[0], shape[1]))
@@ -82,5 +95,5 @@ def fusion(img1, img2):
     x = random.randint(1000, 2000)
     loc = 'demo/out' + str(x) + '.jpg'
     cv2.imwrite(loc, outImage)
-    cv2.imshow("image restored", outImage)
+    cv2.imshow("image window", outImage)
     return loc
