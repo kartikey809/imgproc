@@ -21,10 +21,16 @@ ACTION_CHOICES = (
     ('minmin','MINMIN'),
 
 )
+USES = (
+    ('IMAGE RESTORATION','image restoration'),
+    ('FACE MORPHING','face morphing'),
+    ('IMAGE MIXING','image mixing'),
+)
 
 class Upload(models.Model):
     img1 = models.ImageField(upload_to='images')
     img2 = models.ImageField(upload_to='images')
+    USE = models.CharField(max_length=255,choices= USES)
     Fused_img = models.ImageField(upload_to='images',blank=True)
     FUSION_METHOD = models.CharField(max_length=50, choices=ACTION_CHOICES)
 
