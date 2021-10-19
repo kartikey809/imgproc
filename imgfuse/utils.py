@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import random
 import cv2
 from PIL import Image
+from skimage.metrics import structural_similarity as ssim
 def channelTransform(ch1, ch2, shape,FUSION_METHOD):
     if (FUSION_METHOD=='meanmean'):
         cooef1 = pywt.dwt2(ch1, 'db5', mode='periodization')
@@ -130,8 +131,6 @@ def fusion(cv_img1,cv_img2,FUSION_METHOD):
     # Read the two image
     I1 = cv_img1
     I2 = cv_img2
-    print(I1)
-    print(I2)
     # Resizing image if both are in different shapes
     I2 = cv2.resize(I2, (I1.shape[1], I1.shape[0]))
 
@@ -170,3 +169,40 @@ def fusion(cv_img1,cv_img2,FUSION_METHOD):
     return outImage 
 
 
+def mse(img, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# the two images must have the same dimension
+	err = np.sum((img.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(img.shape[0] * img.shape[1])
+	
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
+
+def comp(img,cv_exp):
+    m = mse(img,cv_exp) 
+    s = ssim(img, cv_exp)
+    return m,s
+
+
+
+
+
+
+
+
+	# setup the figure
+	# fig = plt.figure(title)
+	# plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+	# # show first image
+	# ax = fig.add_subplot(1, 2, 1)
+	# plt.imshow(img, cmap = plt.cm.gray)
+	# plt.axis("off")
+	# # show the second image
+	# ax = fig.add_subplot(1, 2, 2)
+	# plt.imshow(cv_exp, cmap = plt.cm.gray)
+	# plt.axis("off")
+	# # show the images
+	# plt.show()
+    
