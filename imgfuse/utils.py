@@ -169,18 +169,18 @@ def fusion(cv_img1,cv_img2,FUSION_METHOD):
     return outImage 
 
 
-# def mse(img, imageB):
-# 	# the 'Mean Squared Error' between the two images is the
-# 	# sum of the squared difference between the two images;
-# 	err = np.sum((img.astype("float") - imageB.astype("float")) ** 2)
-# 	err /= float(img.shape[0] * img.shape[1])
+def mse(img, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	err = np.sum((img.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(img.shape[0] * img.shape[1])
 	
-# 	return err
+	return err
 
-# def comp(img,cv_exp):
-#     m = mse(img,cv_exp) 
-#     s = ssim(img, cv_exp)
-#     return m,s
+def comp(img,cv_exp):
+    m = mse(img,cv_exp) 
+    s = ssim(img, cv_exp)
+    return m,s
 
 
 
