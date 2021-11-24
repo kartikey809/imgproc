@@ -180,7 +180,7 @@ def mse(img, imageB):
 def comp(img,cv_exp):
     m = mse(img,cv_exp) 
     s = ssim(img, cv_exp)
-    return m,s
+    return m-s
 
 
 

@@ -61,17 +61,16 @@ class Upload(models.Model):
         for choice in ACTION_CHOICES:
             fs = fusion(cv_img1,cv_img2,FUSION_METHOD=choice[0])
             fs = cv2.cvtColor(fs, cv2.COLOR_BGR2GRAY)
-            res, val = comp(fs,cv_exp)
+            res = comp(fs,cv_exp)
             arr.append(res)
-            arr_of_s.append(val)
-        mean_of_s = sum(arr_of_s) / len(arr_of_s)
+        # mean_of_s = sum(arr_of_s) / len(arr_of_s)
         print("The value closest to the mean of the array is: ")
-        print(find_nearest(arr_of_s, mean_of_s))
+        # print(find_nearest(arr_of_s, mean_of_s))
         max_index = 0
-        print(arr_of_s)
+        # print(arr_of_s)
         print(arr)
         for i in range (1,len(arr)):
-            if(arr[max_index]<arr[i]):
+            if(arr[max_index]==arr[i]):
                 max_index = i
         best = ACTION_CHOICES[max_index][0]
         print("________best method _________")
